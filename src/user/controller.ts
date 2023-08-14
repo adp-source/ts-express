@@ -23,11 +23,6 @@ async function getUserByUserId(req: Request, res: Response) {
 async function createUser(req: Request, res: Response) {
   const body: User = req.body;
 
-  console.log({
-    msg: 'create',
-    body: req.body
-  });
-
   try {
     await postgresRepo.createUser(body);
   } catch (err) {
