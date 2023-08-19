@@ -2,7 +2,7 @@ export type UserRole = 'user' | 'admin' | undefined;
 
 export interface User {
   id?: number;
-  username: string;
+  username?: string;
   email: string;
   role: UserRole
 }

@@ -37,8 +37,13 @@ async function findAll(role: UserRole): Promise<User[]> {
   return query.rows;
 }
 
-async function findOne(id: string): Promise<User[]> {
+async function findById(id: string): Promise<User[]> {
   const query = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
+  return query.rows;
+}
+
+async function findByUsername(username: string): Promise<User[]> {
+  const query = await pool.query(`SELECT * FROM users WHERE username = $1`, [username]);
   return query.rows;
 }
 
@@ -51,8 +56,8 @@ async function createUser(user: User): Promise<QueryResult> {
 
 async function updateUser(user: User): Promise<QueryResult> {
   return pool.query(
-    `UPDATE users SET username=$1,email=$2,role=$3`, 
-    [user.username, user.email, user.role]
+    `UPDATE users SET email=$1,role=$2`, 
+    [user.email, user.role]
   );
 }
 
@@ -62,7 +67,8 @@ async function deleteUser(id: string): Promise<QueryResult> {
 
 export {
   findAll,
-  findOne,
+  findById,
+  findByUsername,
   createUser,
   updateUser,
   deleteUser,

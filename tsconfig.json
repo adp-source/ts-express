@@ -12,7 +12,10 @@
           "*": [
               "node_modules/*"
           ]
-      }
+      },
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "resolveJsonModule": true
   },
   "include": [
       "src/**/*"

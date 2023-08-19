@@ -17,6 +17,7 @@ const program = tjs.getProgramFromFiles(
 );
 
 const schema = tjs.generateSchema(program, "*", settings);
+fs.writeFileSync('_schema.json', JSON.stringify(schema, null, 2));
 fs.writeFileSync(
   "_schema.ts",
   "const schema = " +

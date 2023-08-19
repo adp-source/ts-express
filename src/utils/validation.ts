@@ -1,19 +1,24 @@
-import Ajv from 'ajv';
-import _schema from '../../_schema';
 import { Request, Response, NextFunction } from 'express';
+import { ValidateError } from "tsoa";
 
-const ajv = new Ajv();
+export function errorHandler(
+  err: unknown,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Response | void {
+  if (err instanceof ValidateError) {
+    console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
+    return res.status(400).json({
+      message: "Validation Failed",
+      details: err?.fields,
+    });
+  }
+  if (err instanceof Error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
 
-// validation middleware
-export function validateBody(schema: object) {
-  const validate = ajv.compile(schema);
-  
-  return (req: Request, res: Response, next: NextFunction) => {
-    if (!validate(req.body)) {
-      return res.status(400).json(validate.errors);
-    }
-    return next();
-  };
+  next();
 }
-
-export const validateUserBody = validateBody(_schema.User);

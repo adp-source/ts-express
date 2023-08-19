@@ -1,0 +1,11 @@
+Usefulness
+- input validation
+- generating swagger
+- refactoring functions across files, throws errors if type signature doesn't match. Catches some runtime errors at compile time.
+
+
+Tsoa Build
+- npx tsoa routes
+- npx tsoa spec
+- build typescript
+- npm start
