@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import bodyparser from 'body-parser';
-import { errorHandler } from "./utils/validation";
+import { errorHandler } from "./utils/errorHandler";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from '../build/swagger.json';
 
@@ -17,10 +17,6 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument)
 );
-
-app.get('/', (req, res) => {
-  res.send( "Hello world!" );
-});
 
 app.get('/health', (req, res) => {
   res.json({ status: 'UP' });

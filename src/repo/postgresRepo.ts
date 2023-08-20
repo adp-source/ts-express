@@ -1,6 +1,6 @@
 import { Pool, QueryResult } from "pg";
 import dotenv from "dotenv";
-import { User, UserRole } from '../models/user';
+import { CreateUserRequest, UpdateUserRequest, User, UserRole } from '../models/user';
 
 dotenv.config();
 
@@ -47,14 +47,14 @@ async function findByUsername(username: string): Promise<User[]> {
   return query.rows;
 }
 
-async function createUser(user: User): Promise<QueryResult> {
+async function createUser(user: CreateUserRequest): Promise<QueryResult> {
   return pool.query(
     `INSERT INTO users(username, email, role) VALUES($1, $2, $3)`, 
     [user.username, user.email, user.role]
   );
 }
 
-async function updateUser(user: User): Promise<QueryResult> {
+async function updateUser(user: UpdateUserRequest): Promise<QueryResult> {
   return pool.query(
     `UPDATE users SET email=$1,role=$2`, 
     [user.email, user.role]

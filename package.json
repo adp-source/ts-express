@@ -2,17 +2,14 @@
   "name": "ts-express",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "build/index.js",
   "scripts": {
     "start": "node ./build/src/index.js --env=production",
-    "start:dev": "ts-node -r tsconfig-paths/register ./src",
-    "dev": "nodemon -L -e ts --exec \"npm run build && npm start\"",
-    "build": "tsc --outDir build --experimentalDecorators",
+    "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
+    "build": "tsoa spec-and-routes && tsc",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "schema": "node schemaGenerator.js",
-    "spec": "tsoa spec",
-    "routes": "tsoa routes"
+    "schema": "node src/json-schema/schemaGenerator.js"
   },
   "author": "",
   "license": "ISC",

@@ -11,7 +11,7 @@ const compilerOptions = {
 };
 
 const program = tjs.getProgramFromFiles(
-  [path.resolve("src/models/user.ts")],
+  [path.resolve("../src/models/user.ts")],
   compilerOptions,
   './src'
 );

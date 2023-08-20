@@ -9,11 +9,13 @@ import {
   Query,
   Route,
   SuccessResponse,
+  Response,
 } from 'tsoa';
 import * as userService from './userService';
-import { User, UserRole } from '../models/user';
+import { CreateUserRequest, UpdateUserRequest, User, UserRole } from '../models/user';
+import { ApiError, ValidateErrorResponse, GenericErrorResponse } from '../utils/errorHandler';
 
-@Route("users")
+@Route('users')
 export class UsersController extends Controller {
   @Get()
   public async getAllUsers(
@@ -24,54 +26,74 @@ export class UsersController extends Controller {
     return data;
   }
 
-  @Get("{userId}")
+  @Response<GenericErrorResponse>('404', 'Not found')
+  @Get('{userId}')
   public async getUser(
     @Path() userId: string,
-  ): Promise<User> {
+  ): Promise<User | ApiError> {
     const user = await userService.findOne({ id: userId });
 
     if (!user) {
       this.setStatus(404);
+      return {
+        message: 'Not found',
+      }
     }
 
     return user;
   }
 
-  @SuccessResponse("201", "Created")
+  @Response<ValidateErrorResponse>('400', 'Validation Error')
+  @Response<GenericErrorResponse>('400', 'Username already exists')
+  @SuccessResponse('201', 'Created')
   @Post()
   public async createUser(
-    @Body() requestBody: User
-  ): Promise<void> {
+    @Body() requestBody: CreateUserRequest
+  ): Promise<User | ApiError> {
 
     const existing = await userService.findOne({ username: requestBody.username });
     if (existing) {
       this.setStatus(400);
-      return;
+      return {
+        message: 'username already exists'
+      };
     }
 
     await userService.createUser(requestBody);
     
     this.setStatus(201);
+
+    const newUser = await userService.findOne({ username: requestBody.username });
+
+    return newUser;
   }
 
-  @Put("{userId}")
+  @Response<ValidateErrorResponse>('400', 'Validation Error')
+  @Response<GenericErrorResponse>('404', 'Not Found')
+  @Put('{userId}')
   public async updateUser(
     @Path() userId: string,
-    @Body() requestBody: User,
-  ): Promise<void> {
+    @Body() requestBody: UpdateUserRequest,
+  ): Promise<User | ApiError> {
 
     const existing = await userService.findOne({ id: userId });
-    console.log(existing);
     if (!existing) {
       this.setStatus(404);
-      return;
+      return {
+        message: 'username not found',
+      };
     }
 
     await userService.updateUser(requestBody);
+    return {
+      ...existing,
+      email: requestBody.email,
+      role: requestBody.role,
+    };
   }
 
-  @SuccessResponse("204", "No Content")
-  @Delete("{userId}")
+  @SuccessResponse('204', 'No Content')
+  @Delete('{userId}')
   public async deleteUser(
     @Path() userId: string,
   ): Promise<void> {

@@ -1,2 +1,0 @@
-const schema = {"$schema":"http://json-schema.org/draft-07/schema#","definitions":{"UserRole":{"enum":["admin","user"],"type":"string"},"User":{"type":"object","properties":{"id":{"type":"number"},"username":{"type":"string"},"email":{"type":"string"},"role":{"enum":["admin","user"],"type":"string"}},"required":["email","role","username"]}}} as const;
-export default schema.definitions;

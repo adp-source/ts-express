@@ -1,5 +1,5 @@
 import * as postgresRepo from '../repo/postgresRepo';
-import { User, UserRole } from '../models/user';
+import { CreateUserRequest, UpdateUserRequest, User, UserRole } from '../models/user';
 import { QueryResult } from 'pg';
 
 type UserOptions = {
@@ -31,11 +31,11 @@ async function findOne(options: UserOptions): Promise<User> {
   return null;
 }
 
-async function createUser(userBody: User): Promise<QueryResult<any>> {  
+async function createUser(userBody: CreateUserRequest): Promise<QueryResult<any>> {  
   return postgresRepo.createUser(userBody);
 }
 
-async function updateUser(userBody: User): Promise<QueryResult<any>> {
+async function updateUser(userBody: UpdateUserRequest): Promise<QueryResult<any>> {
   return postgresRepo.updateUser(userBody);
 }
 
