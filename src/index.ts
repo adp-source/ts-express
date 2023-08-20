@@ -8,6 +8,7 @@ import swaggerDocument from '../build/swagger.json';
 dotenv.config();
 
 const app = express();
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
 const port = process.env.SERVER_PORT;

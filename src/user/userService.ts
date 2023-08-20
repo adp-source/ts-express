@@ -40,7 +40,7 @@ async function updateUser(userBody: UpdateUserRequest): Promise<QueryResult<any>
 }
 
 async function deleteUser(id: string): Promise<QueryResult<any>> {
-  return await postgresRepo.deleteUser(id);
+  return postgresRepo.deleteUser(id);
 }
 
 export {
