@@ -14,7 +14,7 @@ export interface GenericErrorResponse {
 export type ApiError = ValidateErrorResponse | GenericErrorResponse;
 
 export function errorHandler(
-  err: unknown,
+  err: any,
   req: Request,
   res: Response,
   next: NextFunction
@@ -27,18 +27,14 @@ export function errorHandler(
     console.log(error);
     return res.status(400).json(error);
   }
-  if (err instanceof Error) {
-    const { message = 'Unexpected error', stack } = err;
-    console.log({
-      message,
-      stack,
-      url: req.url
-    });
-    
-    return res.status(500).json({
-      message,
-    });
-  }
-
-  next();
+  const { message = 'Unexpected error', stack } = err;
+  console.log({
+    message,
+    stack,
+    url: req.url
+  });
+  
+  return res.status(500).json({
+    message,
+  });
 }
