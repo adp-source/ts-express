@@ -8,7 +8,7 @@ export interface ValidateErrorResponse {
 
 export interface GenericErrorResponse {
   message: string,
-  details?: object | undefined
+  details?: object
 }
 
 export type ApiError = ValidateErrorResponse | GenericErrorResponse;
